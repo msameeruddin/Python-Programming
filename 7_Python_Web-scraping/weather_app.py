@@ -8,6 +8,9 @@ import dash_table as dt
 from dash.dependencies import (Input, Output)
 from loc_weather import WeatherApp
 
+with open(file='mapbox_token.txt', mode='r') as file:
+    mapbox_api = file.read()
+
 external_stylesheets = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
@@ -49,7 +52,7 @@ def get_weather_details(location):
         mode='markers',
         marker=dict(
             size=15,
-            color='magenta'
+            color='blue'
         ),
         text=curated_location,
         hoverinfo='text',
@@ -59,13 +62,14 @@ def get_weather_details(location):
         height=500,
         width=950,
         margin=dict(l=0, t=0, r=0, b=0),
-        mapbox_style='stamen-terrain',
         mapbox=dict(
+            accesstoken=mapbox_api,
             center=dict(
                 lat=loc_lat[0],
                 lon=loc_lon[0]
             ),
-            zoom=5
+            zoom=5,
+            style='basic'
         )
     )
     fig = go.Figure(data=[trace], layout=layout)
